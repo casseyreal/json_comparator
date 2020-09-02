@@ -14,8 +14,9 @@ def compare_dataval(dataval):
                     data_dict = "{}['{}']".format(data_dict, i)
             data_dict = "{}['{}']".format(data_dict, k)
             if v != eval(data_dict):
-                print("[{}] {} : {}".format(db1, k, eval(data_dict)))
-                print("[{}] {} : {}".format(db2, k, v))
+                print("[{}] {} : {}".format(db1, k, v))
+                print("[{}] {} : {}".format(db2, k, eval(data_dict)))
+                print(data_dict[1:])
 
 if __name__ == "__main__":
     db1 = sys.argv[1]
@@ -45,3 +46,4 @@ if __name__ == "__main__":
 
     if not ddb==sdb:
         compare_dataval(ddb)
+        print("All other values are equal.")
