@@ -13,10 +13,23 @@ def compare_dataval(dataval):
                 for i in data_keys:
                     data_dict = "{}['{}']".format(data_dict, i)
             data_dict = "{}['{}']".format(data_dict, k)
-            if v != eval(data_dict):
-                print("[{}] {} : {}".format(db1, k, v))
-                print("[{}] {} : {}".format(db2, k, eval(data_dict)))
-                print(data_dict[1:])
+            try:
+                if v != eval(data_dict):
+                    if k in ["settings", "subscriber_property_types"]:
+                        print("[{}] {}:".format(db1, k))
+                        for i in v:
+                            if i not in eval(data_dict):
+                                print(i)
+                        print("[{}] {}:".format(db2, k))
+                        for i in eval(data_dict):
+                            if i not in v:
+                                print(i)
+                    else:
+                        print("[{}] {}: {}".format(db1, k, v))
+                        print("[{}] {}: {}".format(db2, k, eval(data_dict)))
+                    #print(data_dict[1:])
+            except KeyError:
+                print("KeyError: \"Unable to find '{}!\"".format(data_dict))
 
 if __name__ == "__main__":
     db1 = sys.argv[1]
