@@ -38,25 +38,31 @@ if __name__ == "__main__":
 
     f_dynamo = open("scratch_1.json", "r")
     dynamo=f_dynamo.read()
-    dynamo=dynamo.replace('"[\\', '[').replace('\\"]"', '"]')\
-        .replace('"{\\', '{').replace('\\"}"', '"}')\
-        .replace('\\', '')\
-        .replace('"{','{').replace('}"','}')\
-        .replace('null', "None").replace('true','True').replace('false', "False")\
-        .replace('"["', '["').replace(']""', ']')
-    ddb=eval(dynamo)
-    print("{} site-id: {}".format(db1, ddb['dataval']['properties']['site_id']))
-
-    f_scylla = open("scratch_2.json", "r")
-    scylla=f_scylla.read()
-    scylla=scylla.replace('"[\\', '[').replace('\\"]"', '"]')\
+    dynamo=dynamo.replace('"[\\', '[').replace(']"', ']')\
         .replace('"{\\', '{').replace('\\"}"', '"}')\
         .replace('\\', '').replace('}"','}')\
         .replace('null', "None").replace('true','True').replace('false', "False")\
-        .replace('"["', '["').replace(']""', ']')
+        .replace('"["', '["').replace('\\"]"', '"]')\
+        .replace(']""', ']')
+    ddb=eval(dynamo)
+
+    f_scylla = open("scratch_2.json", "r")
+    scylla=f_scylla.read()
+    scylla=scylla.replace('"[\\', '[').replace(']"', ']')\
+        .replace('"{\\', '{').replace('\\"}"', '"}')\
+        .replace('\\', '').replace('}"','}')\
+        .replace('null', "None").replace('true','True').replace('false', "False")\
+        .replace('"["', '["').replace('\\"]"', '"]')\
+        .replace(']""', ']')
     sdb=eval(scylla)
-    print("{} site-id: {}".format(db2, sdb['dataval']['properties']['site_id']))
+
+    if 'site_id' in ddb.keys():
+        print("site-id: {}".format(ddb['dataval']['properties']['site_id']))
+
+    if 'hkey' in ddb.keys():
+        print("hkey: {}".format(ddb['hkey']))
+        print("rkey: {}".format(ddb['rkey']))
 
     if not ddb==sdb:
         compare_dataval(ddb)
-        print("All other values are equal.")
+    print("All other values are equal.")
