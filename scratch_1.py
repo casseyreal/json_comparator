@@ -31,30 +31,27 @@ def compare_dataval(dataval):
             except KeyError:
                 print("KeyError: \"Unable to find '{}!\"".format(data_dict))
 
+
+def evaluate_json_source(json_file):
+    json_str = open(json_file, "r")
+    json_str = json_str.read()
+    json_str = json_str.replace('"[\\', '[')\
+        .replace(']"', ']').replace('"[', '[')\
+        .replace('"{\\', '{').replace('\\"}"', '"}') \
+        .replace('\\', '').replace('}"', '}') \
+        .replace('null', "None").replace('true', 'True').replace('false', "False") \
+        .replace('"["', '["').replace('\\"]"', '"]') \
+        .replace(']""', ']')
+    return eval(json_str)
+
+
 if __name__ == "__main__":
     db1 = sys.argv[1]
     db2 = sys.argv[2]
     data_keys = []
 
-    f_dynamo = open("scratch_1.json", "r")
-    dynamo=f_dynamo.read()
-    dynamo=dynamo.replace('"[\\', '[').replace(']"', ']')\
-        .replace('"{\\', '{').replace('\\"}"', '"}')\
-        .replace('\\', '').replace('}"','}')\
-        .replace('null', "None").replace('true','True').replace('false', "False")\
-        .replace('"["', '["').replace('\\"]"', '"]')\
-        .replace(']""', ']')
-    ddb=eval(dynamo)
-
-    f_scylla = open("scratch_2.json", "r")
-    scylla=f_scylla.read()
-    scylla=scylla.replace('"[\\', '[').replace(']"', ']')\
-        .replace('"{\\', '{').replace('\\"}"', '"}')\
-        .replace('\\', '').replace('}"','}')\
-        .replace('null', "None").replace('true','True').replace('false', "False")\
-        .replace('"["', '["').replace('\\"]"', '"]')\
-        .replace(']""', ']')
-    sdb=eval(scylla)
+    ddb = evaluate_json_source("scratch_1.json")
+    sdb = evaluate_json_source("scratch_2.json")
 
     if 'site_id' in ddb.keys():
         print("site-id: {}".format(ddb['dataval']['properties']['site_id']))
