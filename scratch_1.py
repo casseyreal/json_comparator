@@ -38,7 +38,7 @@ def evaluate_json_source(json_file):
     json_str = json_str.replace('"[\\', '[')\
         .replace(']"', ']').replace('"[', '[')\
         .replace('"{\\', '{').replace('\\"}"', '"}') \
-        .replace('\\', '').replace('}"', '}') \
+        .replace('\\', '').replace('}"', '}').replace('[0', '"[0') \
         .replace('null', "None").replace('true', 'True').replace('false', "False") \
         .replace('"["', '["').replace('\\"]"', '"]') \
         .replace(']""', ']')
